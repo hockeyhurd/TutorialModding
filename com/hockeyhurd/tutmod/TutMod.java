@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.hockeyhurd.armor.ArmorSetGlow;
 import com.hockeyhurd.block.BlockGlowOre;
@@ -153,6 +154,9 @@ public class TutMod {
 	}
 
 	private void addCraftingRecipes() {
+		// General purpose items.
+		final String STICK = "stickWood";
+		
 		// Crafting Recipes
 		// With a shape
 		/*
@@ -183,38 +187,42 @@ public class TutMod {
 		pick.addEnchantment(Enchantment.efficiency, 5);
 		pick.addEnchantment(Enchantment.fortune, 4);
 
-		GameRegistry.addRecipe(pick, new Object[] {
+		/*GameRegistry.addRecipe(pick, new Object[] {
 				"yxy", " z ", " z ", 'x', diamondFusedNetherStar, 'y', glowIngot, 'z', Item.stick
-		});
+		});*/
 
+		GameRegistry.addRecipe(new ShapedOreRecipe(pick, new Object[] {
+				"yxy", " z ", " z ", 'x', diamondFusedNetherStar, 'y', glowIngot, 'z', STICK
+		}));
+		
 		// Crafting the sword
 		ItemStack SWORD = new ItemStack(glowSword, 1);
 		SWORD.addEnchantment(Enchantment.fireAspect, 1);
 		SWORD.addEnchantment(Enchantment.sharpness, 5);
 		SWORD.addEnchantment(Enchantment.looting, 4);
-		GameRegistry.addRecipe(SWORD, new Object[] {
-				" w ", "yxy", " z ", 'w', glowIngot, 'x', diamondFusedNetherStar, 'y', Item.diamond, 'z', Item.stick
-		});
+		GameRegistry.addRecipe(new ShapedOreRecipe(SWORD, new Object[] {
+				" w ", "yxy", " z ", 'w', glowIngot, 'x', diamondFusedNetherStar, 'y', Item.diamond, 'z', STICK
+		}));
 
 		// Crafting the axe
 		ItemStack AXE = new ItemStack(glowAxe, 1);
 		AXE.addEnchantment(Enchantment.efficiency, 5);
-		GameRegistry.addRecipe(AXE, new Object[] {
-				"wx ", "xy ", " y ", 'w', diamondFusedNetherStar, 'x', glowIngot, 'y', Item.stick,
-		});
+		GameRegistry.addRecipe(new ShapedOreRecipe(AXE, new Object[] {
+				"wx ", "xy ", " y ", 'w', diamondFusedNetherStar, 'x', glowIngot, 'y', STICK,
+		}));
 
 		// Crafting the glowHoe
 		ItemStack HOE = new ItemStack(glowHoe, 1);
-		GameRegistry.addRecipe(HOE, new Object[] {
-				"wx ", "yz ", " z ", 'w', glowIngot, 'x', diamondFusedNetherStar, 'y', Item.diamond, 'z', Item.stick
-		});
+		GameRegistry.addRecipe(new ShapedOreRecipe(HOE, new Object[] {
+				"wx ", "yz ", " z ", 'w', glowIngot, 'x', diamondFusedNetherStar, 'y', Item.diamond, 'z', STICK
+		}));
 
 		// Crafting the glow Shovel
 		ItemStack SHOVEL = new ItemStack(glowShovel, 1);
 		SHOVEL.addEnchantment(Enchantment.efficiency, 5);
-		GameRegistry.addRecipe(SHOVEL, new Object[] {
-				" x ", " y ", " y ", 'x', diamondFusedNetherStar, 'y', Item.stick
-		});
+		GameRegistry.addRecipe(new ShapedOreRecipe(SHOVEL, new Object[] {
+				" x ", " y ", " y ", 'x', diamondFusedNetherStar, 'y', STICK
+		}));
 
 		// Crafting the glow boots
 		ItemStack BOOT = new ItemStack(glowBoot, 1);

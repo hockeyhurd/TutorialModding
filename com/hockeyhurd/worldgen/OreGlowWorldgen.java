@@ -13,7 +13,7 @@ import cpw.mods.fml.common.IWorldGenerator;
 public class OreGlowWorldgen implements IWorldGenerator {
 
 	private final int chunkSize = 16;
-	private final int chanceOfSpawn = 8;
+	private final int chanceOfSpawn = 4;
 	
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {

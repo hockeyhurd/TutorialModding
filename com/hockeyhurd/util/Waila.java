@@ -112,7 +112,7 @@ public class Waila {
 
 				// Get the side of which the vector ray intersects with.
 				int sideHit = movingObjectPos.sideHit;
-				// System.out.println("Side: " + sideHit);
+				System.out.println("Side: " + sideHit);
 
 				if (placeBlock) {
 					/*

@@ -21,6 +21,7 @@ import com.hockeyhurd.armor.ArmorSetGlow;
 import com.hockeyhurd.block.BlockGlowOre;
 import com.hockeyhurd.block.BlockGlowRlock;
 import com.hockeyhurd.block.BlockGlowTorch;
+import com.hockeyhurd.block.machines.BlockGlowFurnace;
 import com.hockeyhurd.creativetab.CreativeTabTut;
 import com.hockeyhurd.item.ItemDiamondFusedNetherStar;
 import com.hockeyhurd.item.ItemGlowAxe;
@@ -68,6 +69,10 @@ public class TutMod {
 	public static Block glowRock = new BlockGlowRlock(1800, Material.glass).setUnlocalizedName("GlowRock");
 	public static Block glowOre = new BlockGlowOre(1807, Material.rock).setUnlocalizedName("Ore Glow");
 	public static Block glowTorch = new BlockGlowTorch(1808).setUnlocalizedName("GlowTorch");
+	
+	// Machines
+	public static Block glowFurnaceOff = new BlockGlowFurnace(1816, false, Material.rock).setUnlocalizedName("GlowFurnaceOff");
+	public static Block glowFurnaceOn = new BlockGlowFurnace(1817, true, Material.rock).setUnlocalizedName("GlowFurnaceOn");
 
 	// Items
 	public static Item glowDust = new ItemGlowDust(1801).setUnlocalizedName("GlowDust");
@@ -171,6 +176,9 @@ public class TutMod {
 
 		// Glow Ingot recipe.
 		GameRegistry.addRecipe(new ItemStack(glowIngot, 1), "xy", 'x', Item.ingotGold, 'y', glowDust);
+		GameRegistry.addRecipe(new ItemStack(glowIngot, 1), new Object[] {
+			"xyy", "yyy", "yyy", 'x', glowDust, 'y', Item.ingotIron
+		});
 
 		// DiamondNetherStarIngot recipe
 		GameRegistry.addRecipe(new ItemStack(diamondFusedNetherStar, 1), new Object[] {
@@ -186,10 +194,6 @@ public class TutMod {
 		ItemStack pick = new ItemStack(glowPickaxe, 1);
 		pick.addEnchantment(Enchantment.efficiency, 5);
 		pick.addEnchantment(Enchantment.fortune, 4);
-
-		/*GameRegistry.addRecipe(pick, new Object[] {
-				"yxy", " z ", " z ", 'x', diamondFusedNetherStar, 'y', glowIngot, 'z', Item.stick
-		});*/
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(pick, new Object[] {
 				"yxy", " z ", " z ", 'x', diamondFusedNetherStar, 'y', glowIngot, 'z', STICK
@@ -256,9 +260,11 @@ public class TutMod {
 	}
 
 	private void registerBlocks() {
-		GameRegistry.registerBlock(glowRock);
-		GameRegistry.registerBlock(glowOre);
-		GameRegistry.registerBlock(glowTorch);
+		GameRegistry.registerBlock(glowRock, "GlowRock");
+		GameRegistry.registerBlock(glowOre, "GlowOre");
+		GameRegistry.registerBlock(glowTorch, "GlowTorch");
+		GameRegistry.registerBlock(glowFurnaceOff, "GlowFuranceOff");
+		GameRegistry.registerBlock(glowFurnaceOn, "GlowFurnaceOn");
 	}
 
 	private void pulverizeRecipes() {

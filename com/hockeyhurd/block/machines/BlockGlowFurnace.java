@@ -6,12 +6,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import codechicken.lib.math.MathHelper;
 
+import com.hockeyhurd.tileentity.TileEntityGlowFurnace;
 import com.hockeyhurd.tutmod.TutMod;
 
+import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,7 +46,8 @@ public class BlockGlowFurnace extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int side, int metaData) {
-		return side == 1 ? iconTop : side == 0 ? iconTop : (side == 4 ? iconFront : this.blockIcon);
+		// Get the icon needed based on the faces of given side.
+		return side == metaData ? this.iconFront : (side == 0 ? this.iconTop : (side == 1 ? this.iconTop : this.blockIcon));
 	}
 
 	public int idDropped(int amount, Random random, int par3) {
@@ -70,11 +77,31 @@ public class BlockGlowFurnace extends BlockContainer {
 			world.setBlockMetadataWithNotify(x, y, z, b0, 2);
 		}
 	}
+	
+	// Sets meta data based on player's rotation about the y-axis.
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+		int dir = MathHelper.floor_double( (double) (player.rotationYaw * 4.0f / 360.0f) + 0.5d) & 3;
+		
+		if (dir == 0) world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+		if (dir == 1) world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+		if (dir == 2) world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+		if (dir == 3) world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+		
+		if (stack.hasDisplayName()) ((TileEntityGlowFurnace) world.getBlockTileEntity(x, y, z)).setGuiDisplayName(stack.getDisplayName());
+		
+	}
+	
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			FMLNetworkHandler.openGui(player, TutMod.instance, TutMod.guiIDGlowFurnace, world, x, y, z);
+		}
+		
+		return true;
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		// return new TileEntityGlowFurnace();
-		return null;
+		return new TileEntityGlowFurnace();
 	}
 
 }

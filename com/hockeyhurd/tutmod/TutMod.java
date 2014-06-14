@@ -23,6 +23,7 @@ import com.hockeyhurd.block.BlockGlowRlock;
 import com.hockeyhurd.block.BlockGlowTorch;
 import com.hockeyhurd.block.machines.BlockGlowFurnace;
 import com.hockeyhurd.creativetab.CreativeTabTut;
+import com.hockeyhurd.gui.GuiHandler;
 import com.hockeyhurd.item.ItemDiamondFusedNetherStar;
 import com.hockeyhurd.item.ItemGlowAxe;
 import com.hockeyhurd.item.ItemGlowDust;
@@ -33,14 +34,17 @@ import com.hockeyhurd.item.ItemGlowShovel;
 import com.hockeyhurd.item.ItemGlowSword;
 import com.hockeyhurd.item.ItemNetherSoulCollector;
 import com.hockeyhurd.item.ItemOreGlowRaw;
+import com.hockeyhurd.tileentity.TileEntityGlowFurnace;
 import com.hockeyhurd.worldgen.OreGlowWorldgen;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -53,6 +57,9 @@ public class TutMod {
 	@SidedProxy(clientSide = "com.hockeyhurd.client.ClientProxy", serverSide = "com.hockeyhurd.tutmod.CommonProxy")
 	public static CommonProxy proxy;
 
+	@Instance("tutmod")
+	public static TutMod instance;
+	
 	// Creative Tab
 	public static CreativeTabs myCreativeTab = new CreativeTabTut(CreativeTabs.getNextID(), "TutMod");
 
@@ -73,6 +80,9 @@ public class TutMod {
 	// Machines
 	public static Block glowFurnaceOff = new BlockGlowFurnace(1816, false, Material.rock).setUnlocalizedName("GlowFurnaceOff");
 	public static Block glowFurnaceOn = new BlockGlowFurnace(1817, true, Material.rock).setUnlocalizedName("GlowFurnaceOn");
+	
+	// Gui stuff
+	public static final int guiIDGlowFurnace = 0;
 
 	// Items
 	public static Item glowDust = new ItemGlowDust(1801).setUnlocalizedName("GlowDust");
@@ -121,11 +131,13 @@ public class TutMod {
 		GameRegistry.registerWorldGenerator(worldgenGlowOre);
 
 		registerBlocks();
+		registerTileEntities();
 		addOreDict();
 		addCraftingRecipes();
 		addNames();
 		pulverizeRecipes();
 		// inductionSmelterRecipes();
+		registerGuiHandler();
 
 		LogWrapper.log(Level.INFO, "TutMod: Initialized successfully!");
 	}
@@ -267,6 +279,10 @@ public class TutMod {
 		GameRegistry.registerBlock(glowFurnaceOn, "GlowFurnaceOn");
 	}
 
+	private void registerTileEntities() {
+		GameRegistry.registerTileEntity(TileEntityGlowFurnace.class, "tileEntityGlowFurnace");
+	}
+	
 	private void pulverizeRecipes() {
 		// Code performing glowOre into 2*glowDust via Thermal Expansion
 		// Pulverizer.
@@ -294,4 +310,8 @@ public class TutMod {
 		 */
 	}
 
+	private void registerGuiHandler() {
+		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+	}
+	
 }

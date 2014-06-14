@@ -55,6 +55,7 @@ public class BlockGlowFurnace extends BlockContainer {
 	private void setDefaultDirection(World world, int x, int y, int z) {
 		
 		if (!world.isRemote) {
+			// Search blocks around placed area to determine which orientation the block should be placed about.
 			int behind = world.getBlockId(x, y, z - 1);
 			int front = world.getBlockId(x, y, z + 1);
 			int left = world.getBlockId(x - 1, y, z);
